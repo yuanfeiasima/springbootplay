@@ -1,11 +1,13 @@
 package com.wwt.springbootplay.algorithms;
 
 import com.wwt.springbootplay.algorithms.base.ListNode;
+import org.springframework.stereotype.Service;
 
 /**
  * @author grace
  * @date 2019-05-20 14:09
  */
+@Service
 public class L206ReverseLinkedList {
 
     public ListNode reverseList(ListNode head) {
