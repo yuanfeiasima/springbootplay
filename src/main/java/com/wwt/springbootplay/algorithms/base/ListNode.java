@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Data
 public class ListNode {
-    int val;
+    public int val;
     public ListNode next;
 
     public ListNode(int val) {
