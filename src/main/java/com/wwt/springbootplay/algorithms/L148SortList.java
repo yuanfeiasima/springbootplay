@@ -4,6 +4,7 @@ import com.wwt.springbootplay.algorithms.base.ListNode;
 import org.springframework.stereotype.Service;
 
 /**
+ * 排序列表
  * @author grace
  * @date 2019-05-29 16:55
  */
@@ -28,6 +29,7 @@ public class L148SortList {
         return merge(l, r);
     }
 
+    //合并两个有序列表
     ListNode merge(ListNode l, ListNode r){
         ListNode dummyHead = new ListNode(0);
         ListNode cur = dummyHead;

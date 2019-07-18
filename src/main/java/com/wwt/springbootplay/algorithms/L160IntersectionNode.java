@@ -4,6 +4,7 @@ import com.wwt.springbootplay.algorithms.base.ListNode;
 import org.springframework.stereotype.Service;
 
 /**
+ * 两个列表的相交节点
  * @author grace
  * @date 2019-05-29 15:47
  */
