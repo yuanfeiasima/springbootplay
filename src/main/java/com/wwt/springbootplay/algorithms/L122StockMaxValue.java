@@ -1,4 +1,4 @@
-package com.wwt.springbootplay;
+package com.wwt.springbootplay.algorithms;
 
 /**
  * @author grace
