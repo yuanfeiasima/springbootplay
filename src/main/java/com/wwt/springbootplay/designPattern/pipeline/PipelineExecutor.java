@@ -2,6 +2,8 @@ package com.wwt.springbootplay.designPattern.pipeline;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -9,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * 管道执行器
@@ -20,6 +23,9 @@ import java.util.Objects;
 public class PipelineExecutor {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private ThreadPoolTaskExecutor pipelineThreadPool;
 
     /**
      * 引用 PipelineRouteConfig 中的 pipelineRouteMap
@@ -66,4 +72,20 @@ public class PipelineExecutor {
         return lastSuccess;
     }
 
+
+    /**
+     * 异步处理输入的上下文数据
+     *
+     * @param context  上下文数据
+     * @param callback 处理完成的回调
+     */
+    public void acceptAsync(PipelineContext context, BiConsumer<PipelineContext, Boolean> callback) {
+        pipelineThreadPool.execute(() -> {
+            boolean success = acceptSync(context);
+
+            if (callback != null) {
+                callback.accept(context, success);
+            }
+        });
+    }
 }
