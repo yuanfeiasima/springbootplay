@@ -34,7 +34,7 @@ public class ModelService {
         InstanceBuildContext data = new InstanceBuildContext();
 //        同步调用
         boolean success = false;
-//        boolean success = pipelineExecutor.acceptSync(data);
+        boolean success1 = pipelineExecutor.acceptSync(data);
         List<Boolean> result = new ArrayList<>();
         //异步调用
         pipelineExecutor.acceptAsync(data, new BiConsumer<PipelineContext, Boolean>() {

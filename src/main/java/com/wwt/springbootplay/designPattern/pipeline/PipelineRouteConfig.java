@@ -1,5 +1,7 @@
 package com.wwt.springbootplay.designPattern.pipeline;
 
+import com.wwt.springbootplay.designPattern.pipeline.invoke.posubmitbiz.ModelInstanceCreator;
+import com.wwt.springbootplay.designPattern.pipeline.invoke.posubmitbiz.ModelInstanceSaver;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * 管道路由的配置
+ *
  * @author wangwentao09
  * @date 2021-02-02 16:54
  * @desc
@@ -25,20 +28,42 @@ public class PipelineRouteConfig implements ApplicationContextAware {
      */
     private static final
     Map<Class<? extends PipelineContext>,
-                List<Class<? extends ContextHandler<? extends PipelineContext>>>> PIPELINE_ROUTE_MAP = new HashMap<>(4);
+            List<Class<? extends ContextHandler<? extends PipelineContext>>>> submitRoute = new HashMap<>(4);
+    private static final
+    Map<Class<? extends PipelineContext>, List<Class<? extends ContextHandler<? extends PipelineContext>>>> adjustRoute = new HashMap<>(4);
 
     /*
      * 在这里配置各种上下文类型对应的处理管道：键为上下文类型，值为处理器类型的列表
      */
     static {
-        PIPELINE_ROUTE_MAP.put(InstanceBuildContext.class,
+        submitRoute.put(InstanceBuildContext.class,
                 Arrays.asList(
                         InputDataPreChecker.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
                         ModelInstanceCreator.class,
                         ModelInstanceSaver.class
                 ));
 
         // 将来其他 Context 的管道配置
+        adjustRoute.put(InstanceBuildContext.class,
+                Arrays.asList(
+                        InputDataPreChecker.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceCreator.class,
+                        ModelInstanceSaver.class
+                ));
     }
 
     /**
@@ -46,7 +71,7 @@ public class PipelineRouteConfig implements ApplicationContextAware {
      */
     @Bean("pipelineRouteMap")
     public Map<Class<? extends PipelineContext>, List<? extends ContextHandler<? extends PipelineContext>>> getHandlerPipelineMap() {
-        return PIPELINE_ROUTE_MAP.entrySet()
+        return submitRoute.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, this::toPipeline));
     }
